@@ -10,7 +10,7 @@ export default function Home() {
       </main>
       <footer className={styles.footer}>
         <a
-          href="https://github.com/apslagle"
+          href="https://github.com/apslagle/fetch-project"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -21,7 +21,7 @@ export default function Home() {
             width={16}
             height={16}
           />
-          Created by Andrew Slagle
+          See code on Github
         </a>
       </footer>
     </div>
