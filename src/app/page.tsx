@@ -1,12 +1,18 @@
+'use client';
 import Image from "next/image";
 import styles from "./page.module.css";
 import Login from "./login.tsx";
+import { useState } from "react";
 
 export default function Home() {
+  let [user, setUser] = useState('')
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Login />
+        {user ? 
+        (null) : 
+        (<Login setUser={setUser} />)}
       </main>
       <footer className={styles.footer}>
         <a
