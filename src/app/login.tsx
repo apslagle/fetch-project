@@ -1,10 +1,10 @@
 "use client";
 import { useCallback, useEffect, useState, useRef } from 'react';
+import {baseUrl} from './constants.tsx';
 
 export default function Login({setUser}) {
 	let [name, setName] = useState('');
 	let [email, setEmail] = useState('');
-	let [ready, setReady] = useState(false);
 	const nameRef = useRef(null);
 	const emailRef = useRef(null);
 
@@ -25,16 +25,18 @@ export default function Login({setUser}) {
 			alert('Name and Email must both be provided to login');
 			return;
 		}
-		let request = new Request("https://frontend-take-home-service.fetch.com/auth/login", {
+		let request1 = new Request(baseUrl + "/auth/login", {
   			method: "POST",
+  			headers: {
+		        "Content-Type": "application/json"
+		    },
   			body: JSON.stringify({
   				name: name,
   				email: email
   			}),
-  			credentials: 'include'
+  			credentials: "include"
 		});
-		fetch(request).then(response => {
-			console.log(response)/**/
+		fetch(request1).then(response => {
 			setUser(name);
 		});
 	};
@@ -54,6 +56,7 @@ export default function Login({setUser}) {
 					ref={emailRef}
 					onChange={e => setEmail(e.target.value)}
 				/>
+				<br></br>
 				<button onClick={login}>Login</button>
 			</form>
 		</div>

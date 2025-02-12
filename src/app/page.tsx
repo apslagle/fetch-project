@@ -2,7 +2,8 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import Login from "./login.tsx";
-import { useState } from "react";
+import Search from "./search.tsx";
+import { memo, useState } from "react";
 
 export default function Home() {
   let [user, setUser] = useState('')
@@ -11,7 +12,7 @@ export default function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         {user ? 
-        (null) : 
+        (<Search />) : 
         (<Login setUser={setUser} />)}
       </main>
       <footer className={styles.footer}>
