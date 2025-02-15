@@ -6,7 +6,7 @@ import Search from "./search.tsx";
 import { memo, useState } from "react";
 
 export default function Home() {
-  let [user, setUser] = useState('')
+  let [user, setUser] = useState('');
 
   return (
     <div className={styles.page}>
