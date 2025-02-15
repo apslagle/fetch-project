@@ -8,11 +8,15 @@ import { memo, useState } from "react";
 export default function Home() {
   let [user, setUser] = useState('');
 
+  function searchDogs(options) {
+    console.log(options)
+  }
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         {user ? 
-        (<Search />) : 
+        (<Search searchDogs={searchDogs} />) : 
         (<Login setUser={setUser} />)}
       </main>
       <footer className={styles.footer}>
