@@ -3,12 +3,12 @@ import { useCallback, useEffect, useState, useRef } from 'react';
 
 export default function Dog({data}) {
 	return (
-		<div id={data.id}>
-			<img src={data.img}></img>
+		<div id={data.id} style={{float: 'left', height: '300px', width: '29%', margin: '2%'}}>
 			<h4>Name: {data.name}</h4>
 			<h4>Age: {data.age}</h4>
 			<h4>Breed: {data.breed}</h4>
 			<h4>Zip Code: {data.zip_code}</h4>
+			<img src={data.img} style={{width: '100%', maxHeight: '150px'}}></img>
 		</div>
 	)
 }

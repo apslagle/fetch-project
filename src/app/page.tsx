@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import Dog from "./dog.tsx";
 import Login from "./login.tsx";
 import Search from "./search.tsx";
+import NavigationButtons from "./navigation.tsx";
 import { memo, useState } from "react";
 import {baseUrl} from './constants.tsx';
 
@@ -11,6 +12,8 @@ export default function Home() {
   const [user, setUser] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
   const [dogs, setDogs] = useState([]);
+  const [next, setNext] = useState('');
+  const [previous, setPrevious] = useState('');
 
   let dogElements = dogs.map(dog =>{
     return (
@@ -21,31 +24,39 @@ export default function Home() {
 
   function searchDogs(options) {
     const queryParams = createQueryParams(options);
-    let request1 = new Request(baseUrl + "/dogs/search?" + queryParams, {
+    let urlParams = "/dogs/search?size=24&" + queryParams;
+    fetchDogs(urlParams);
+  }
+
+  const navigateNext = () => {
+    fetchDogs(next);
+  }
+
+  const navigatePrevious = () => {
+    fetchDogs(previous);
+  }
+
+  function fetchDogs(urlParams) {
+    let request1 = new Request(baseUrl + urlParams, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
         },
         credentials: "include"
     });
-    fetch(request1).then(response => {
-      return response.json();
-      
-    }).then(ids => {
+    fetch(request1).then(makeJson).then(response => {
       let request2 = new Request(baseUrl + "/dogs", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(ids.resultIds),
+        body: JSON.stringify(response.resultIds),
         credentials: "include"
       });
+      setNext(response.next);
+      setPrevious(response.prev);
       return fetch(request2);
-    }).then(dogs => {
-      let json = dogs.json();
-      console.log(json);
-      return json;
-    }).then(dogs => setDogs(dogs));
+    }).then(makeJson).then(dogs => setDogs(dogs));
   }
 
   return (
@@ -54,7 +65,10 @@ export default function Home() {
         {user ? 
         (<Search searchDogs={searchDogs} />) : 
         (<Login setUser={setUser} />)}
-        {dogElements}
+        <div style={{width: '100%'}}>
+          {dogElements}
+        </div>
+        <NavigationButtons previous={navigatePrevious} next={navigateNext} />
       </main>
       <footer className={styles.footer}>
         <a
@@ -83,9 +97,14 @@ function createQueryParams(options) {
   const queryString = definedParameters.join('&');
   return queryString;
 }
+
 function isDefined(value) {
   if (typeof value === 'number') {
     return true;
   }
   return value.length > 1;
+}
+
+function makeJson(res) {
+  return res.json();
 }

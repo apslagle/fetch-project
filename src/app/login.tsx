@@ -1,8 +1,8 @@
 "use client";
 import { useCallback, useEffect, useState, useRef } from 'react';
-import {baseUrl} from './constants.tsx';
+import {baseUrl} from './constants';
 
-export default function Login({setUser}) {
+export default function Login({ setUser }) {
 	let [name, setName] = useState('');
 	let [email, setEmail] = useState('');
 	const nameRef = useRef(null);
