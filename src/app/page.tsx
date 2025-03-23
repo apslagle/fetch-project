@@ -7,56 +7,17 @@ import Search from "./search.tsx";
 import NavigationButtons from "./navigation.tsx";
 import { memo, useState } from "react";
 import {baseUrl} from './constants.tsx';
+import DogResults from './dogResults.tsx'
 
 export default function Home() {
   const [user, setUser] = useState('');
-  const [sortOrder, setSortOrder] = useState('asc');
-  const [dogs, setDogs] = useState([]);
-  const [next, setNext] = useState('');
-  const [previous, setPrevious] = useState('');
-
-  let dogElements = dogs.map(dog =>{
-    return (
-      <Dog data={dog} key={dog.id} />
-    )
-  }) || null;
+  const [searchParams, setSearchParams] = useState(false);
 
 
   function searchDogs(options) {
     const queryParams = createQueryParams(options);
     let urlParams = "/dogs/search?size=24&" + queryParams;
-    fetchDogs(urlParams);
-  }
-
-  const navigateNext = () => {
-    fetchDogs(next);
-  }
-
-  const navigatePrevious = () => {
-    fetchDogs(previous);
-  }
-
-  function fetchDogs(urlParams) {
-    let request1 = new Request(baseUrl + urlParams, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: "include"
-    });
-    fetch(request1).then(makeJson).then(response => {
-      let request2 = new Request(baseUrl + "/dogs", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(response.resultIds),
-        credentials: "include"
-      });
-      setNext(response.next);
-      setPrevious(response.prev);
-      return fetch(request2);
-    }).then(makeJson).then(dogs => setDogs(dogs));
+    setSearchParams(urlParams);
   }
 
   return (
@@ -65,10 +26,7 @@ export default function Home() {
         {user ? 
         (<Search searchDogs={searchDogs} />) : 
         (<Login setUser={setUser} />)}
-        <div style={{width: '100%'}}>
-          {dogElements}
-        </div>
-        <NavigationButtons previous={navigatePrevious} next={navigateNext} />
+        <DogResults searchParams={searchParams} />
       </main>
       <footer className={styles.footer}>
         <a
