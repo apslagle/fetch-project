@@ -50,6 +50,10 @@ export default function Search({searchDogs}) {
 
 	function addZipCode(e) {
 		e.preventDefault();
+		if (zip.length !== 5) {
+			alert('Zip codes must be exactly 5 characters')
+			return
+		}
 		let zip = e.target[0].value;
 		e.target[0].value = '';
 		let newZips = [...zipCodes];
@@ -95,8 +99,8 @@ export default function Search({searchDogs}) {
 			<Select 
 				ref={dropdownRef}
 				options={breedOptions}
-				multi={true}
-				onChange={setBreedsWrapper}
+				multi={false}
+				onChange={setBreedsWrapper} 
 			/>
 			<h3>Zip Codes</h3>
 			<form onSubmit={addZipCode}>

@@ -52,7 +52,8 @@ function createQueryParams(options) {
   const keys = Object.keys(options);
   const parameters = keys.map(key => {
     let value = options[key];
-    return isDefined(options[key]) ? `${key}=${options[key]}` : ''
+    if (Array.isArray(value)) value = `${value}`;
+    return isDefined(value) ? `${key}=${value}` : ''
   });
   const definedParameters = parameters.filter(str => str.length > 0);
   const queryString = definedParameters.join('&');
