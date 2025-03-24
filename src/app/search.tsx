@@ -10,6 +10,7 @@ export default function Search({searchDogs}) {
 	const [ageMin, setMinAge] = useState(0);
 	const [ageMax, setMaxAge] = useState(20);
 	const [zipCodes, setZipCodes] = useState([]);
+	let dropdownRef = useRef(null);
 
 	useEffect(() => {
 		async function getBreeds() {
@@ -26,9 +27,21 @@ export default function Search({searchDogs}) {
 				}
 			});
 			setBreedOptions(parsed);
+			
 		}
 		getBreeds();
 	}, [])
+	useEffect(() => {
+		let dropdownObserver = new MutationObserver(() => {
+			let dropdown = document.getElementsByClassName('react-dropdown-select-dropdown')[0];
+			if (dropdown) {
+				dropdown.style.background = 'black';
+			}
+		});
+		dropdownObserver.observe(dropdownRef.current.select.current, {
+			childList: true
+		})
+	}, [breedOptions])
 
 	function setBreedsWrapper(breeds) {
 		breeds = breeds.map(breed => breed.label);
@@ -80,9 +93,9 @@ export default function Search({searchDogs}) {
 			<h2>Search Options</h2>
 			<h3>Possible Breeds</h3>
 			<Select 
+				ref={dropdownRef}
 				options={breedOptions}
 				multi={true}
-				color={'#4d4d4d'}
 				onChange={setBreedsWrapper}
 			/>
 			<h3>Zip Codes</h3>

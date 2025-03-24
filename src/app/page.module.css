@@ -16,7 +16,11 @@
   font-family: var(--font-geist-sans);
 }
 
-@media (prefers-color-scheme: light) {
+.react-dropdown-select-dropdown {
+  background: black;
+}
+
+@media (prefers-color-scheme: dark) {
   .page {
     --gray-rgb: 255, 255, 255;
     --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
@@ -161,7 +165,7 @@ a.secondary {
   }
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   .logo {
     filter: invert();
   }

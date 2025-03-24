@@ -50,7 +50,10 @@ export default function Home() {
 
 function createQueryParams(options) {
   const keys = Object.keys(options);
-  const parameters = keys.map(key => isDefined(options[key]) ? `${key}=${options[key]}` : '');
+  const parameters = keys.map(key => {
+    let value = options[key];
+    return isDefined(options[key]) ? `${key}=${options[key]}` : ''
+  });
   const definedParameters = parameters.filter(str => str.length > 0);
   const queryString = definedParameters.join('&');
   return queryString;
@@ -66,3 +69,5 @@ function isDefined(value) {
 function makeJson(res) {
   return res.json();
 }
+
+

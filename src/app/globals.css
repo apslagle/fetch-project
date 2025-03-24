@@ -40,3 +40,7 @@ a {
     color-scheme: dark;
   }
 }
+
+.react-dropdown-select-dropdown {
+  background: black;
+}
