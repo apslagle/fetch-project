@@ -17,6 +17,7 @@ export default function Home() {
   function searchDogs(options) {
     const queryParams = createQueryParams(options);
     let urlParams = "/dogs/search?size=24&" + queryParams;
+    setSearchParams('');
     setSearchParams(urlParams);
   }
 

@@ -9,7 +9,7 @@ export default function Search({searchDogs}) {
 	const [breeds, setBreeds] = useState([]);
 	const [ageMin, setMinAge] = useState(0);
 	const [ageMax, setMaxAge] = useState(20);
-	const [zipCodes, setZipCodes] = useState([]);
+	const [zipCodes, setZipCodes] = useState('');
 	let dropdownRef = useRef(null);
 
 	useEffect(() => {
@@ -48,18 +48,13 @@ export default function Search({searchDogs}) {
 		setBreeds(breeds);
 	}
 
-	function addZipCode(e) {
-		e.preventDefault();
+	function addZipCodes(e) {
+		let zip = e.target.value;
 		if (zip.length !== 5) {
-			alert('Zip codes must be exactly 5 characters')
+			setZipCodes('')
 			return
 		}
-		let zip = e.target[0].value;
-		e.target[0].value = '';
-		let newZips = [...zipCodes];
-		newZips.push(zip);
-		newZips.sort((a, b) => Number(a) - Number(b))
-		setZipCodes(newZips);
+		setZipCodes(zip);
 	}
 
 	function setMinimumAge(e) {
@@ -74,12 +69,6 @@ export default function Search({searchDogs}) {
 		setMaxAge(max);
 	}
 
-	function removeZip(zip) {
-		let newZips = zipCodes.filter(code => code !== zip);
-		setZipCodes(newZips);
-
-	}
-
 	function findDogs() {
 		let options = {
 			breeds,
@@ -89,8 +78,6 @@ export default function Search({searchDogs}) {
 		}
 		searchDogs(options);
 	}
-
-	const zipButtons = zipCodes.map(zip => <ZipButton key={zip} value={zip} removeZip={removeZip} />);
 
 	return (
 		<div>
@@ -103,11 +90,10 @@ export default function Search({searchDogs}) {
 				onChange={setBreedsWrapper} 
 			/>
 			<h3>Zip Codes</h3>
-			<form onSubmit={addZipCode}>
+			<form onChange={addZipCodes}>
 				<input></input>
-				<button type="submit">Submit</button>
+				{zipCodes ? null : <p>Zip codes must be exactly 5 characters</p>}
 			</form>
-			{zipButtons}
 			<h3>Age</h3>
 			<form>
 				<h4>Minimum Age</h4>
@@ -118,13 +104,4 @@ export default function Search({searchDogs}) {
 			<button onClick={findDogs}>Find a Dog!</button>
 		</div>
 	)
-}
-
-function ZipButton({value, removeZip}) {
-	function removeButton() {
-		removeZip(value)
-	}
-	return (
-			<button onClick={removeButton}>{value}</button>
-		)
 }
