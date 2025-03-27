@@ -32,17 +32,19 @@ export default function Search({searchDogs}) {
 		getBreeds();
 	}, [])
 	useEffect(() => {
-		let dropdownObserver = new MutationObserver(() => {
-			let dropdown = document.getElementsByClassName('react-dropdown-select-dropdown')[0] as HTMLElement;
-			if (dropdown) {
-				dropdown.style.background = 'black';
+		if (browserIsDarkTheme()) {
+			let dropdownObserver = new MutationObserver(() => {
+				let dropdown = document.getElementsByClassName('react-dropdown-select-dropdown')[0] as HTMLElement;
+				if (dropdown) {
+					dropdown.style.background = 'black';
+				}
+			});
+			dropdownObserver.observe(dropdownRef.current.select.current, {
+				childList: true
+			})
+			return () => {
+				dropdownObserver.disconnect();
 			}
-		});
-		dropdownObserver.observe(dropdownRef.current.select.current, {
-			childList: true
-		})
-		return () => {
-			dropdownObserver.disconnect();
 		}
 	}, [breedOptions])
 
@@ -103,4 +105,8 @@ export default function Search({searchDogs}) {
 			<button onClick={findDogs}>Find a Dog!</button>
 		</div>
 	)
+}
+
+function browserIsDarkTheme() {
+	return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
