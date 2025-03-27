@@ -18,7 +18,10 @@ export default function Search({searchDogs}) {
 				method: "GET",
 				credentials: 'include'
 			});
-			let response = await fetch(request)
+			let response = await fetch(request);
+			if (response.status === 401) {
+				alert('Third Party Cookies must be allowed for site to function \nPlease check your browser settings');
+			}
 			let json = await response.json();
 			let parsed = json.map((breed, i) => {
 				return {
@@ -47,6 +50,9 @@ export default function Search({searchDogs}) {
 			}
 		}
 	}, [breedOptions])
+	useEffect(() => {
+		document.requestStorageAccess();
+	}, [])
 
 	function setBreedsWrapper(breeds) {
 		breeds = breeds.map(breed => breed.label);
