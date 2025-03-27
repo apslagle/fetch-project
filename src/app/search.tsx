@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState, useRef } from 'react';
-import { baseUrl } from './constants.tsx';
+import { baseUrl } from './constants';
 import Select from "react-dropdown-select";
 
 
@@ -33,7 +33,7 @@ export default function Search({searchDogs}) {
 	}, [])
 	useEffect(() => {
 		let dropdownObserver = new MutationObserver(() => {
-			let dropdown = document.getElementsByClassName('react-dropdown-select-dropdown')[0];
+			let dropdown = document.getElementsByClassName('react-dropdown-select-dropdown')[0] as HTMLElement;
 			if (dropdown) {
 				dropdown.style.background = 'black';
 			}
@@ -41,6 +41,9 @@ export default function Search({searchDogs}) {
 		dropdownObserver.observe(dropdownRef.current.select.current, {
 			childList: true
 		})
+		return () => {
+			dropdownObserver.disconnect();
+		}
 	}, [breedOptions])
 
 	function setBreedsWrapper(breeds) {
@@ -83,12 +86,8 @@ export default function Search({searchDogs}) {
 		<div>
 			<h2>Search Options</h2>
 			<h3>Possible Breeds</h3>
-			<Select 
-				ref={dropdownRef}
-				options={breedOptions}
-				multi={false}
-				onChange={setBreedsWrapper} 
-			/>
+			{/* @ts-ignore */}
+			<Select ref={dropdownRef} options={breedOptions} multi={false} onChange={setBreedsWrapper} />
 			<h3>Zip Codes</h3>
 			<form onChange={addZipCodes}>
 				<input></input>

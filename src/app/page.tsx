@@ -1,23 +1,22 @@
 'use client';
 import Image from "next/image";
 import styles from "./page.module.css";
-import Dog from "./dog.tsx";
-import Login from "./login.tsx";
-import Search from "./search.tsx";
-import NavigationButtons from "./navigation.tsx";
+import Dog from "./dog";
+import Login from "./login";
+import Search from "./search";
+import NavigationButtons from "./navigation";
 import { memo, useState } from "react";
-import {baseUrl} from './constants.tsx';
-import DogResults from './dogResults.tsx'
+import {baseUrl} from './constants';
+import DogResults from './dogResults'
 
 export default function Home() {
   const [user, setUser] = useState('');
-  const [searchParams, setSearchParams] = useState(false);
+  const [searchParams, setSearchParams] = useState('');
 
 
   function searchDogs(options) {
     const queryParams = createQueryParams(options);
     let urlParams = "/dogs/search?size=24&" + queryParams;
-    setSearchParams('');
     setSearchParams(urlParams);
   }
 

@@ -16,10 +16,6 @@
   font-family: var(--font-geist-sans);
 }
 
-.react-dropdown-select-dropdown {
-  background: black;
-}
-
 @media (prefers-color-scheme: dark) {
   .page {
     --gray-rgb: 255, 255, 255;
